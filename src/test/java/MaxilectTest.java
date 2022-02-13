@@ -1,4 +1,5 @@
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Step;
 import org.junit.Test;
 
 import static com.codeborne.selenide.Selectors.byCssSelector;
@@ -16,20 +17,36 @@ public class MaxilectTest {
 
     @Test
     public void redirectToBlockchainProjectsPage() {
-        open(baseUrl);
-        $(byCssSelector(mainMenuProjectSelector)).click();
-        assertEquals(projectsUrl + "/", WebDriverRunner.getWebDriver().getCurrentUrl());
+        openSite();
+        clickOnProjectsInMenu();
         blockchainContentCheck();
 
-        open(baseUrl);
-        $(byCssSelector(allProjectsButtonSelector)).scrollIntoView(false);
-        $(byCssSelector(allProjectsButtonSelector)).click();
-        assertEquals(projectsUrl + "/", WebDriverRunner.getWebDriver().getCurrentUrl());
+        openSite();
+        clickOnProjectsInMainPage();
         blockchainContentCheck();
     }
 
+    @Step("Открываем сайт")
+    private void openSite() {
+        open(baseUrl);
+    }
+
+    @Step("Проверка фильтрации проектов по тегу Blockchain")
     private void blockchainContentCheck() {
         $(byCssSelector(filterBlockchainSelector)).click();
         assertEquals(blockchainProjectsCount, $$(byCssSelector(blockchainPortfolioItemSelector)).size());
+    }
+
+    @Step("Кликаем на Проекты в меню")
+    private void clickOnProjectsInMenu() {
+        $(byCssSelector(mainMenuProjectSelector)).click();
+        assertEquals(projectsUrl + "/", WebDriverRunner.getWebDriver().getCurrentUrl());
+    }
+
+    @Step("Кликаем на Все проекты на главной странице")
+    private void clickOnProjectsInMainPage() {
+        $(byCssSelector(allProjectsButtonSelector)).scrollIntoView(false);
+        $(byCssSelector(allProjectsButtonSelector)).click();
+        assertEquals(projectsUrl + "/", WebDriverRunner.getWebDriver().getCurrentUrl());
     }
 }
