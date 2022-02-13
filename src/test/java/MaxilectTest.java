@@ -1,4 +1,5 @@
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ public class MaxilectTest {
     String blockchainPortfolioItemSelector = ".portfolio-item[data-filter='blockchain']";
     int blockchainProjectsCount = 2;
 
+
     @Test
     public void redirectToBlockchainProjectsPage() {
         openSite();
@@ -27,23 +29,27 @@ public class MaxilectTest {
     }
 
     @Step("Открываем сайт")
+    @Attachment
     private void openSite() {
         open(baseUrl);
     }
 
     @Step("Проверка фильтрации проектов по тегу Blockchain")
+    @Attachment
     private void blockchainContentCheck() {
         $(byCssSelector(filterBlockchainSelector)).click();
         assertEquals(blockchainProjectsCount, $$(byCssSelector(blockchainPortfolioItemSelector)).size());
     }
 
     @Step("Кликаем на Проекты в меню")
+    @Attachment
     private void clickOnProjectsInMenu() {
         $(byCssSelector(mainMenuProjectSelector)).click();
         assertEquals(projectsUrl + "/", WebDriverRunner.getWebDriver().getCurrentUrl());
     }
 
     @Step("Кликаем на Все проекты на главной странице")
+    @Attachment
     private void clickOnProjectsInMainPage() {
         $(byCssSelector(allProjectsButtonSelector)).scrollIntoView(false);
         $(byCssSelector(allProjectsButtonSelector)).click();
